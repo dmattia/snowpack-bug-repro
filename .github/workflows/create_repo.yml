@@ -1,0 +1,20 @@
+name: GitHub Actions Demo
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: bash create_repo.sh
+      - run: yarn workspace @onboarding/frontend start --open none &
+      - run: sleep 5
+      - run: |
+        readonly status_code=$( curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/)
+        if [ "$status_code" = "200" ]; then
+            echo "Server queried successfully"
+        else
+            echo "Found invalid status code $status_code"
+            exit 1
+        fi

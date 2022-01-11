@@ -1,0 +1,31 @@
+{
+  "include": [
+    "src",
+    "types"
+  ],
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "paths": {},
+    "noEmit": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": [
+      "mocha",
+      "snowpack-env"
+    ],
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "importsNotUsedAsValues": "error"
+  },
+  "extends": "../tsconfig.base.json",
+  "references": [
+    {
+      "path": "../utils"
+    }
+  ]
+}

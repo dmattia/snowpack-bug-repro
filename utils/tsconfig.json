@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../build/@onboarding/utils",
+    "tsBuildInfoFile": "../build/@onboarding/utils.tsbuildinfo",
+    "rootDir": "src"
+  }
+}

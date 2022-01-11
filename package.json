@@ -1,0 +1,11 @@
+{
+  "name": "@onboarding/root",
+  "packageManager": "yarn@3.1.1",
+  "workspaces": [
+    "frontend",
+    "utils"
+  ],
+  "devDependencies": {
+    "typescript": "=4.4.4"
+  }
+}

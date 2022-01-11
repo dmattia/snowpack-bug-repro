@@ -24,7 +24,7 @@ jobs:
         run: |
           mkdir -p utils/src
           echo "export const addOne = (val: number): number => val + 1" > utils/src/addOne.ts
-          echo "{}" | jq '.name="@onboarding/utils" | .main="src/addOne.ts"' > utils/package.json
+          echo "{}" | jq '.name="@onboarding/utils" | .main="src/addOne"' > utils/package.json
 
       - name: Tell yarn that we have two workspaces, frontend and utils
         run: cat package.json | jq '.workspaces=["frontend", "utils"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
@@ -61,15 +61,4 @@ jobs:
         run: yarn tsc --build --verbose
 
       - name: Start up the server
-        run: yarn workspace @onboarding/frontend start --open none &
-
-      - name: Test that we can talk to the server
-        run: |
-          sleep 5
-          readonly status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/)
-          if [ "$status_code" = "200" ]; then
-              echo "Server queried successfully"
-          else
-              echo "Found invalid status code $status_code"
-              exit 1
-          fi
+        run: yarn workspace @onboarding/frontend start --open none

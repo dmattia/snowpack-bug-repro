@@ -1,8 +1,10 @@
 #! /bin/bash
 
+# This works on my Mac to create the repo exactly as is (if starting from just this file)
+
 # Create Yarn v2 repository
 yarn init -2
-# sed -i '' 's/!..yarn.cache//' .gitignore # Do not use zero-installs
+sed -i '' 's/!..yarn.cache//' .gitignore # Do not use zero-installs
 
 # Create `utils` workspace
 mkdir -p utils/src && echo "export const addOne = (val: number): number => val + 1" > utils/src/addOne.ts
@@ -54,4 +56,4 @@ sed -i '' 's/count \+ 1/addOne(count)/' frontend/src/App.tsx
 yarn tsc --build --verbose
 
 # App runs happily :)
-# yarn workspace @onboarding/frontend start --open none
+yarn workspace @onboarding/frontend start --open none

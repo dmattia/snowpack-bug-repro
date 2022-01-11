@@ -61,7 +61,7 @@ jobs:
           echo "import { addOne } from '@onboarding/utils';" | cat - frontend/src/App.tsx | tee frontend/src/App.tsx
           cat frontend/src/App.tsx
           echo "----------------"
-          sed -i 's/count \+ 1/addOne(count)/' frontend/src/App.tsx 
+          sed -i 's/count + 1/addOne\(count\)/' frontend/src/App.tsx 
           echo "----------------"
           cat frontend/src/App.tsx
 

@@ -12,6 +12,11 @@ jobs:
           node-version: '14.17.3'
       - run: npm install -g yarn@1.22.5
 
+      - name: Install Apt dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y moreutils
+
       # Create a yarn berry project
       - run: yarn init -2
 
@@ -22,8 +27,7 @@ jobs:
           echo "{}" | jq '.name="@onboarding/utils" | .main="src/addOne.ts"' > utils/package.json
 
       - name: Tell yarn that we have two workspaces, frontend and utils
-        # run: cat package.json | jq '.workspaces=["frontend", "utils"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
-        run: cat package.json | jq '.workspaces=["frontend", "utils"]'
+        run: cat package.json | jq '.workspaces=["frontend", "utils"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
 
       - name: Create typescript files
         run: |
@@ -43,8 +47,6 @@ jobs:
         run: yarn workspace @onboarding/frontend add -D @yarnpkg/pnpify
 
       # # - uses: actions/checkout@v2
-      # - run: sudo apt-get update -y
-      # - run: sudo apt-get install -y moreutils
       # - run: bash create_repo.sh
       # - run: yarn workspace @onboarding/frontend start --open none &
       # - run: sleep 5

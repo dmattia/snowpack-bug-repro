@@ -11,10 +11,10 @@ jobs:
       - run: yarn workspace @onboarding/frontend start --open none &
       - run: sleep 5
       - run: |
-        readonly status_code=$( curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/)
-        if [ "$status_code" = "200" ]; then
-            echo "Server queried successfully"
-        else
-            echo "Found invalid status code $status_code"
-            exit 1
-        fi
+          readonly status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/)
+          if [ "$status_code" = "200" ]; then
+              echo "Server queried successfully"
+          else
+              echo "Found invalid status code $status_code"
+              exit 1
+          fi

@@ -48,7 +48,7 @@ jobs:
 
       - name: Set workspaceRoot in the snowpack config file
         run: |
-          sed -i '' 's/export default {/export default { workspaceRoot: ".."/' frontend/snowpack.config.mjs
+          sed -i 's/export default {/export default { workspaceRoot: "..",/' frontend/snowpack.config.mjs
 
       # # - uses: actions/checkout@v2
       # - run: bash create_repo.sh

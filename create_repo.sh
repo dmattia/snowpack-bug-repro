@@ -48,7 +48,7 @@ EOT
 yarn workspace @onboarding/frontend add @onboarding/utils
 cat frontend/tsconfig.json | yarn dlx --quiet strip-json-comments-cli | jq '.references=[{"path": "../utils"}]' | sponge frontend/tsconfig.json
 echo "import { addOne } from '@onboarding/utils';" | cat - frontend/src/App.tsx | tee frontend/src/App.tsx
-sed -i '' 's/count + 1/addOne(count)/' frontend/src/App.tsx 
+sed -i '' 's/count \+ 1/addOne(count)/' frontend/src/App.tsx 
 
 # Typescript can still build
 yarn tsc --build --verbose

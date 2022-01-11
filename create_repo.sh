@@ -18,8 +18,8 @@ echo '{}' | jq '.extends="./tsconfig.base.json" | .include=[] | .files=[] | .ref
 
 # Create a snowpack app
 yarn create snowpack-app frontend --template @snowpack/app-template-react-typescript --use-yarn --no-install --no-git
-cat frontend/tsconfig.json | npx strip-json-comments | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' | sponge frontend/tsconfig.json
-cat frontend/package.json | npx strip-json-comments | jq '.name="@onboarding/frontend" | .devDependencies.typescript="=4.4.4"' | sponge frontend/package.json
+cat frontend/tsconfig.json | yarn dlx strip-json-comments-cli | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' | sponge frontend/tsconfig.json
+cat frontend/package.json | yarn dlx strip-json-comments-cli | jq '.name="@onboarding/frontend" | .devDependencies.typescript="=4.4.4"' | sponge frontend/package.json
 yarn workspace @onboarding/frontend add -D @yarnpkg/pnpify
 rm frontend/snowpack.config.mjs
 cat <<EOT >> frontend/snowpack.config.mjs
@@ -46,7 +46,7 @@ EOT
 
 # Add an internal dependency
 yarn workspace @onboarding/frontend add @onboarding/utils
-cat frontend/tsconfig.json | npx strip-json-comments | jq '.references=[{"path": "../utils"}]' | sponge frontend/tsconfig.json
+cat frontend/tsconfig.json | yarn dlx strip-json-comments-cli | jq '.references=[{"path": "../utils"}]' | sponge frontend/tsconfig.json
 echo "import { addOne } from '@onboarding/utils';" | cat - frontend/src/App.tsx | tee frontend/src/App.tsx
 sed -i '' 's/count + 1/addOne(count)/' frontend/src/App.tsx 
 

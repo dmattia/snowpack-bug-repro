@@ -23,7 +23,7 @@ jobs:
 
       - name: Tell yarn that we have two workspaces, frontend and utils
         # run: cat package.json | jq '.workspaces=["frontend", "utils"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
-        run: cat package.json | jq
+        run: cat package.json | jq '.workspaces=["frontend", "utils"]'
 
       - name: Create typescript files
         run: |

@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: apt-get install moreutils
       - run: bash create_repo.sh
       - run: yarn workspace @onboarding/frontend start --open none &
       - run: sleep 5

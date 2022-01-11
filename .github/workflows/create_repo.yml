@@ -43,8 +43,12 @@ jobs:
           cat frontend/tsconfig.json | yarn dlx --quiet strip-json-comments-cli | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' | sponge frontend/tsconfig.json
           cat frontend/package.json | yarn dlx --quiet strip-json-comments-cli | jq '.name="@onboarding/frontend" | .devDependencies.typescript="=4.4.4"' | sponge frontend/package.json
 
-      - name: Install pnpify
+      - name: Install pnpify and all yarn deps
         run: yarn workspace @onboarding/frontend add -D @yarnpkg/pnpify
+
+      - name: Set workspaceRoot in the snowpack config file
+        run: |
+          sed -i '' 's/export default {/export default { workspaceRoot: ".."/' frontend/snowpack.config.mjs
 
       # # - uses: actions/checkout@v2
       # - run: bash create_repo.sh

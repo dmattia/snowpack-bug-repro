@@ -43,7 +43,7 @@ jobs:
         #   cat frontend/tsconfig.json | yarn dlx strip-json-comments-cli | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' | sponge frontend/tsconfig.json
         #   cat frontend/package.json | yarn dlx strip-json-comments-cli | jq '.name="@onboarding/frontend" | .devDependencies.typescript="=4.4.4"' | sponge frontend/package.json
         run: |
-          cat frontend/tsconfig.json | yarn dlx strip-json-comments-cli | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' 
+          cat frontend/tsconfig.json | yarn dlx --quiet strip-json-comments-cli | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' 
 
       # - name: Install pnpify
       #   run: yarn workspace @onboarding/frontend add -D @yarnpkg/pnpify

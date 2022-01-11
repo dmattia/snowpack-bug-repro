@@ -2,7 +2,7 @@
 
 # Create Yarn v2 repository
 yarn init -2
-sed -i '' 's/!..yarn.cache//' .gitignore # Do not use zero-installs
+# sed -i '' 's/!..yarn.cache//' .gitignore # Do not use zero-installs
 
 # Create `utils` workspace
 mkdir -p utils/src && echo "export const addOne = (val: number): number => val + 1" > utils/src/addOne.ts

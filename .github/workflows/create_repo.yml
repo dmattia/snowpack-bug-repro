@@ -39,12 +39,14 @@ jobs:
         run: yarn create snowpack-app frontend --template @snowpack/app-template-react-typescript --use-yarn --no-install --no-git
 
       - name: Modify the generated files a touch
+        # run: |
+        #   cat frontend/tsconfig.json | yarn dlx strip-json-comments-cli | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' | sponge frontend/tsconfig.json
+        #   cat frontend/package.json | yarn dlx strip-json-comments-cli | jq '.name="@onboarding/frontend" | .devDependencies.typescript="=4.4.4"' | sponge frontend/package.json
         run: |
-          cat frontend/tsconfig.json | yarn dlx strip-json-comments-cli | jq '.extends="../tsconfig.base.json" | .compilerOptions.noEmit=false' | sponge frontend/tsconfig.json
-          cat frontend/package.json | yarn dlx strip-json-comments-cli | jq '.name="@onboarding/frontend" | .devDependencies.typescript="=4.4.4"' | sponge frontend/package.json
+          cat frontend/tsconfig.json | yarn dlx strip-json-comments-cli 
 
-      - name: Install pnpify
-        run: yarn workspace @onboarding/frontend add -D @yarnpkg/pnpify
+      # - name: Install pnpify
+      #   run: yarn workspace @onboarding/frontend add -D @yarnpkg/pnpify
 
       # # - uses: actions/checkout@v2
       # - run: bash create_repo.sh

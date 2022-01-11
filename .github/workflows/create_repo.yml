@@ -48,8 +48,7 @@ jobs:
 
       - name: Set workspaceRoot in the snowpack config file
         run: |
-          cat frontend/snowpack.config.mjs
-          cat frontend/snowpack.config.mjs
+          sed -i 's/export default {/export default { workspaceRoot: "..",/' frontend/snowpack.config.mjs
 
       - name: Have the frontend use the utils function
         run: |

@@ -50,6 +50,16 @@ jobs:
         run: |
           sed -i 's/export default {/export default { workspaceRoot: "..",/' frontend/snowpack.config.mjs
 
+      - name: Have the frontend use the utils function
+        run: |
+          yarn workspace @onboarding/frontend add @onboarding/utils
+          cat frontend/tsconfig.json | yarn dlx --quiet strip-json-comments-cli | jq '.references=[{"path": "../utils"}]' | sponge frontend/tsconfig.json
+          echo "import { addOne } from '@onboarding/utils';" | cat - frontend/src/App.tsx | tee frontend/src/App.tsx
+          sed -i 's/count + 1/addOne(count)/' frontend/src/App.tsx 
+
+      - name: Build typescript
+        run: yarn tsc --build --verbose
+
       # # - uses: actions/checkout@v2
       # - run: bash create_repo.sh
       # - run: yarn workspace @onboarding/frontend start --open none &

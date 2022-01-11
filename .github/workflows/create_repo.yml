@@ -65,8 +65,8 @@ jobs:
           echo "----------------"
           cat frontend/src/App.tsx
 
-      - name: Build typescript
-        run: yarn tsc --build --verbose
+      # - name: Build typescript
+      #   run: yarn tsc --build --verbose
 
       # # - uses: actions/checkout@v2
       # - run: bash create_repo.sh

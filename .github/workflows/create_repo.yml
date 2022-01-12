@@ -49,17 +49,12 @@ jobs:
 
           rm frontend/src/App.tsx
           cat <<EOT >> frontend/src/App.tsx
-          import React, from 'react';
+          import React from 'react';
 
           import SyntaxHighlighter from 'react-syntax-highlighter';
           import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-          import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 
-          interface AppProps {}
-
-          function App({}: AppProps) {
-
-            // Return the App component.
+          function App() {
             return (
               <SyntaxHighlighter language="javascript" style={docco}>
                 const a = 'foo';

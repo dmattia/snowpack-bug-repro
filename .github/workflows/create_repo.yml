@@ -20,20 +20,12 @@ jobs:
       # Create a yarn berry project
       - run: yarn init -2
 
-      - name: Create an `@onboarding/utils` workspace with a utility function `addOne`
-        run: |
-          mkdir -p utils/src
-          echo "export const addOne = (val: number): number => val + 1" > utils/src/addOne.ts
-          echo "{}" | jq '.name="@onboarding/utils" | .main="src/addOne"' > utils/package.json
-
-      - name: Tell yarn that we have two workspaces, frontend and utils
-        run: cat package.json | jq '.workspaces=["frontend", "utils"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
+        run: cat package.json | jq '.workspaces=["frontend"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
 
       - name: Create typescript files
         run: |
           echo '{"compilerOptions":{"incremental":true,"target":"es2019","module":"commonjs","lib":["esnext","es2020","es2019","dom"],"allowJs":false,"checkJs":false,"jsx":"react-jsx","declaration":true,"composite":true,"declarationMap":true,"sourceMap":true,"strict":true,"skipLibCheck":true,"noUnusedLocals":true,"noImplicitReturns":true,"noFallthroughCasesInSwitch":true,"moduleResolution":"node","baseUrl":".","types":[],"typeRoots":["@types","node_modules/@types"],"esModuleInterop":true,"resolveJsonModule":true,"forceConsistentCasingInFileNames":true}}' | jq > tsconfig.base.json
-          echo '{"extends":"../tsconfig.base.json","compilerOptions":{"outDir":"../build/@onboarding/utils","tsBuildInfoFile":"../build/@onboarding/utils.tsbuildinfo","rootDir":"src"}}' | jq > utils/tsconfig.json
-          echo '{}' | jq '.extends="./tsconfig.base.json" | .include=[] | .files=[] | .references=[{"path": "frontend"},{"path": "utils"}]' > tsconfig.json
+          echo '{}' | jq '.extends="./tsconfig.base.json" | .include=[] | .files=[] | .references=[{"path": "frontend"}]' > tsconfig.json
 
       - name: Create a snowpack app
         run: yarn create snowpack-app frontend --template @snowpack/app-template-react-typescript --use-yarn --no-install --no-git
@@ -50,15 +42,48 @@ jobs:
         run: |
           sed -i 's/export default {/export default { workspaceRoot: "..",/' frontend/snowpack.config.mjs
 
-      - name: Have the frontend use the utils function
+      - name: Have the frontend use the react-syntax-highlighter component
         run: |
-          yarn workspace @onboarding/frontend add @onboarding/utils
-          cat frontend/tsconfig.json | yarn dlx --quiet strip-json-comments-cli | jq '.references=[{"path": "../utils"}]' | sponge frontend/tsconfig.json
-          sed -i "1 s/^/import { addOne } from '@onboarding\/utils';\n/" frontend/src/App.tsx
-          sed -i 's/count + 1/addOne\(count\)/' frontend/src/App.tsx 
+          yarn workspace @onboarding/frontend add react-syntax-highlighter
+          yarn workspace @onboarding/frontend add -D @types/react-syntax-highlighter
+
+          rm frontend/src/App.tsx
+          cat <<EOT >> frontend/src/App.tsx
+          import React, from 'react';
+
+          import SyntaxHighlighter from 'react-syntax-highlighter';
+          import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+          import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+
+          interface AppProps {}
+
+          function App({}: AppProps) {
+
+            // Return the App component.
+            return (
+              <SyntaxHighlighter language="javascript" style={docco}>
+                const a = 'foo';
+                const b = [a, 'bar'];
+              </SyntaxHighlighter>
+            );
+          }
+
+          export default App;
+          EOT
 
       - name: Build typescript
         run: yarn tsc --build --verbose
 
       - name: Start up the server
-        run: yarn workspace @onboarding/frontend start --open none
+        run: yarn workspace @onboarding/frontend start --open none &
+
+      - name: Test that we can talk to the server
+        run: |
+          sleep 5
+          readonly status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/)
+          if [ "$status_code" = "200" ]; then
+              echo "Server queried successfully"
+          else
+              echo "Found invalid status code $status_code"
+              exit 1
+          fi

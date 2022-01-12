@@ -20,7 +20,7 @@ jobs:
       # Create a yarn berry project
       - run: yarn init -2
 
-        run: cat package.json | jq '.workspaces=["frontend"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
+      - run: cat package.json | jq '.workspaces=["frontend"] | .devDependencies.typescript="=4.4.4" | .name="@onboarding/root"' | sponge package.json
 
       - name: Create typescript files
         run: |

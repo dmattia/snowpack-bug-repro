@@ -74,7 +74,7 @@ jobs:
 
       - name: Test that we can talk to the server
         run: |
-          sleep 5
+          sleep 300
           readonly status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/)
           if [ "$status_code" = "200" ]; then
               echo "Server queried successfully"
